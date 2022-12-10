@@ -32,25 +32,73 @@
         switch (playerSelection.toUpperCase()) {
           case 'ROCK':
             if (computerSelection.toUpperCase() === 'SCISSORS') {
-              return 'You win! Rock beats Scissors';
+              console.log('You win! Rock beats Scissors');
+              return 'Player';
             } else if (computerSelection.toUpperCase() === 'PAPER') {
-              return 'You lose! Paper beats Rock';
+              console.log('You lose! Paper beats Rock');
+              return 'Computer';
             }
             break;
           case 'PAPER':
             if (computerSelection.toUpperCase() === 'SCISSORS') {
-              return 'You lose! Scissors beats Paper';
+              console.log('You lose! Scissors beats Paper');
+              return 'Computer';
             } else if (computerSelection.toUpperCase() === 'ROCK') {
-              return 'You win! Paper beats Rock';
+              console.log('You win! Paper beats Rock');
+              return 'Player';
             }
             break;
           case 'SCISSORS':
             if (computerSelection.toUpperCase() === 'PAPER') {
-              return 'You win! Scissors beats Paper';
+              console.log('You win! Scissors beats Paper');
+              return 'Player';
             } else if (computerSelection.toUpperCase() === 'ROCK') {
-              return 'You lose! Rock beats Scissors';
+              console.log('You lose! Rock beats Scissors');
+              return 'Computer';
             }
             break;
+        }
+      }
+
+      // Create function called game to play 5 rounds, keep score and determine a winner
+      function game() {
+        let rounds = 0;
+        let playerScore = 0;
+        let computerScore = 0;
+        let gameResult;
+
+        for (let i = 0; i < 5; i++) {
+          const playerSelection = prompt('Type Rock, Paper or Scissors');
+
+          if (playerSelection === null) {
+            return 'Player cancelled the game!';
+          } else if (
+            playerSelection === '' ||
+            (playerSelection.toUpperCase() != 'ROCK' && playerSelection.toUpperCase() != 'PAPER' && playerSelection.toUpperCase() != 'SCISSORS')
+          ) {
+            return 'Invalid selection, Game Over!';
+          }
+
+          const computerSelection = getComputerChoice();
+          rounds = i + 1;
+          gameResult = playRound(playerSelection, computerSelection);
+          console.log(`Rounds: ${rounds}`);
+          if (gameResult === 'Draw') {
+            return;
+            console.log(`DRAW: The score is player ${playerScore} and computer ${computerScore}`);
+          } else if (gameResult === 'Computer') {
+            computerScore++;
+            console.log(`COMPUTER WINS: The score is player ${playerScore} and computer ${computerScore}`);
+          } else {
+            playerScore++;
+            console.log(`PLAYER WINS: The score is player ${playerScore} and computer ${computerScore}`);
+          }
+        }
+
+        if (playerScore > computerScore) {
+          return 'You won the game';
+        } else {
+          return 'You lose the game';
         }
       }
     </script>
