@@ -20,6 +20,39 @@
           return 'Scissors';
         }
       }
+
+      // 2. Create a function that plays a single round of Rock Paper Scissors and take two parameters
+      //    playerSelection and computerSelection and returns a string with the winner of the round
+      //    such as "You lose! Paper beats Rock". Make playerSelection case-insensitive
+      function playRound(playerSelection, computerSelection) {
+        if (playerSelection === computerSelection) {
+          return 'Draw!';
+        }
+
+        switch (playerSelection.toUpperCase()) {
+          case 'ROCK':
+            if (computerSelection.toUpperCase() === 'SCISSORS') {
+              return 'You win! Rock beats Scissors';
+            } else if (computerSelection.toUpperCase() === 'PAPER') {
+              return 'You lose! Paper beats Rock';
+            }
+            break;
+          case 'PAPER':
+            if (computerSelection.toUpperCase() === 'SCISSORS') {
+              return 'You lose! Scissors beats Paper';
+            } else if (computerSelection.toUpperCase() === 'ROCK') {
+              return 'You win! Paper beats Rock';
+            }
+            break;
+          case 'SCISSORS':
+            if (computerSelection.toUpperCase() === 'PAPER') {
+              return 'You win! Scissors beats Paper';
+            } else if (computerSelection.toUpperCase() === 'ROCK') {
+              return 'You lose! Rock beats Scissors';
+            }
+            break;
+        }
+      }
     </script>
   </head>
   <body></body>
