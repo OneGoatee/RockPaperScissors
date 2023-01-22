@@ -62,12 +62,15 @@
 
       // Create function called game to play 5 rounds, keep score and determine a winner
       function game() {
-        let rounds = 0;
         let playerScore = 0;
         let computerScore = 0;
         let gameResult;
 
-        for (let i = 0; i < 5; i++) {
+        while (playerScore < 5 || computerScore < 5) {
+          if (playerScore === 5 || computerScore === 5) {
+            return `GAME OVER!`;
+          }
+
           const playerSelection = prompt('Type Rock, Paper or Scissors').toUpperCase();
 
           if (playerSelection === null) {
@@ -77,9 +80,9 @@
           }
 
           const computerSelection = getComputerChoice().toUpperCase();
-          rounds = i + 1;
+
           gameResult = playRound(playerSelection, computerSelection);
-          console.log(`Rounds: ${rounds}`);
+
           if (gameResult === 'Draw') {
             return;
             console.log(`DRAW: The score is player ${playerScore} and computer ${computerScore}`);
