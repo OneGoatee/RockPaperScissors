@@ -5,7 +5,83 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Project: Rock Paper Scissors</title>
+    <style>
+      * {
+        font-size: 40px;
+        margin-top: 15px;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .scores {
+        display: flex;
+        gap: 20px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="round">Select Rock, Paper or Scissors!</div>
+      <div class="scores">
+        <div class="player-score">Player: 0</div>
+        <div class="computer-score">Computer: 0</div>
+      </div>
+      <div class="controls">
+        <button class="selection">Rock</button>
+        <button class="selection">Paper</button>
+        <button class="selection">Scissors</button>
+        <button class="reset-btn">Reset</button>
+      </div>
+      <div class="results"></div>
+    </div>
+
     <script>
+      let rounds = 0;
+      let playerScore = 0;
+      let computerScore = 0;
+      let gameResult = '';
+
+      let roundTxt = document.querySelector('.round');
+      let playerScoreTxt = document.querySelector('.player-score');
+      let computerScoreTxt = document.querySelector('.computer-score');
+      let resultsTxt = document.querySelector('.results');
+      const reset = document.querySelector('.reset-btn');
+      const buttons = document.querySelectorAll('.selection');
+
+      reset.style.display = 'none';
+
+      buttons.forEach(button => {
+        button.addEventListener('click', e => {
+          playRound(e.target.innerText.toUpperCase(), getComputerChoice());
+        });
+      });
+
+      reset.addEventListener('click', resetGame);
+
+      function resetGame() {
+        rounds = 0;
+        playerScore = 0;
+        computerScore = 0;
+        gameResult = '';
+        playerScoreTxt.innerText = `Player: 0`;
+        computerScoreTxt.innerText = `Computer: 0`;
+        roundTxt.innerText = `Select Rock, Paper or Scissors!`;
+        reset.style.display = 'none';
+        buttons.forEach(button => {
+          button.style.display = 'initial';
+          resultsTxt.innerText = '';
+        });
+      }
+
       // 1. Create a function called getComputerChoice that will return "Rock", "Paper" or "Scissors"
       function getComputerChoice() {
         let computerChoice = Math.floor(Math.random() * 3 + 1);
@@ -26,82 +102,82 @@
       //    such as "You lose! Paper beats Rock". Make playerSelection case-insensitive
       function playRound(playerSelection, computerSelection) {
         if (playerSelection === computerSelection) {
-          return 'Draw!';
+          gameResult = 'Draw';
+          resultsTxt.innerText = gameResult;
+        } else if (playerSelection === null) {
+          gameResult = 'Player cancelled the game!';
+          resultsTxt.innerText = gameResult;
+        } else if (playerSelection === '' || (playerSelection != 'ROCK' && playerSelection != 'PAPER' && playerSelection != 'SCISSORS')) {
+          gameResult = 'Invalid selection, Game Over!';
+          resultsTxt.innerText = gameResult;
         }
 
         switch (playerSelection) {
           case 'ROCK':
             if (computerSelection === 'SCISSORS') {
-              console.log('You win! Rock beats Scissors');
-              return 'Player';
+              resultsTxt.innerText = 'You win! Rock beats Scissors';
+              gameResult = 'Player';
+              playerScore++;
+              playerScoreTxt.innerText = `Player: ${playerScore}`;
             } else if (computerSelection === 'PAPER') {
-              console.log('You lose! Paper beats Rock');
-              return 'Computer';
+              resultsTxt.innerText = 'You lose! Paper beats Rock';
+              gameResult = 'Computer';
+              computerScore++;
+              computerScoreTxt.innerText = `Computer: ${computerScore}`;
             }
             break;
           case 'PAPER':
             if (computerSelection === 'SCISSORS') {
-              console.log('You lose! Scissors beats Paper');
-              return 'Computer';
+              resultsTxt.innerText = 'You lose! Scissors beats Paper';
+              gameResult = 'Computer';
+              computerScore++;
+              computerScoreTxt.innerText = `Computer: ${computerScore}`;
             } else if (computerSelection === 'ROCK') {
-              console.log('You win! Paper beats Rock');
-              return 'Player';
+              resultsTxt.innerText = 'You win! Paper beats Rock';
+              gameResult = 'Player';
+              playerScore++;
+              playerScoreTxt.innerText = `Player: ${playerScore}`;
             }
             break;
           case 'SCISSORS':
             if (computerSelection === 'PAPER') {
-              console.log('You win! Scissors beats Paper');
-              return 'Player';
+              resultsTxt.innerText = 'You win! Scissors beats Paper';
+              gameResult = 'Player';
+              playerScore++;
+              playerScoreTxt.innerText = `Player: ${playerScore}`;
             } else if (computerSelection === 'ROCK') {
-              console.log('You lose! Rock beats Scissors');
-              return 'Computer';
+              resultsTxt.innerText = 'You lose! Rock beats Scissors';
+              gameResult = 'Computer';
+              computerScore++;
+              computerScoreTxt.innerText = `Computer: ${computerScore}`;
             }
             break;
         }
-      }
 
-      // Create function called game to play 5 rounds, keep score and determine a winner
-      function game() {
-        let playerScore = 0;
-        let computerScore = 0;
-        let gameResult;
+        rounds++;
+        roundTxt.innerText = `Round ${rounds}`;
 
-        while (playerScore < 5 || computerScore < 5) {
-          if (playerScore === 5 || computerScore === 5) {
-            return `GAME OVER!`;
-          }
-
-          const playerSelection = prompt('Type Rock, Paper or Scissors').toUpperCase();
-
-          if (playerSelection === null) {
-            return 'Player cancelled the game!';
-          } else if (playerSelection === '' || (playerSelection != 'ROCK' && playerSelection != 'PAPER' && playerSelection != 'SCISSORS')) {
-            return 'Invalid selection, Game Over!';
-          }
-
-          const computerSelection = getComputerChoice().toUpperCase();
-
-          gameResult = playRound(playerSelection, computerSelection);
-
-          if (gameResult === 'Draw') {
-            return;
-            console.log(`DRAW: The score is player ${playerScore} and computer ${computerScore}`);
-          } else if (gameResult === 'Computer') {
-            computerScore++;
-            console.log(`COMPUTER WINS: The score is player ${playerScore} and computer ${computerScore}`);
-          } else {
-            playerScore++;
-            console.log(`PLAYER WINS: The score is player ${playerScore} and computer ${computerScore}`);
-          }
+        console.log(`Round: ${rounds}`);
+        if (gameResult === 'Draw') {
+        } else if (gameResult === 'Computer') {
+        } else {
         }
 
-        if (playerScore > computerScore) {
-          return 'You won the game';
-        } else {
-          return 'You lose the game';
+        if (playerScore === 5 || computerScore === 5) {
+          buttons.forEach(button => {
+            button.style.display = 'none';
+            reset.style.display = 'initial';
+          });
+
+          if (playerScore > computerScore) {
+            resultsTxt.innerText = `Game Over!
+            Player Wins!`;
+          } else if (computerScore > playerScore) {
+            resultsTxt.innerText = `Game Over!
+            Computer Wins!`;
+          }
         }
       }
     </script>
-  </head>
-  <body></body>
+  </body>
 </html>
